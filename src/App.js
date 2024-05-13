@@ -1,94 +1,62 @@
 import React, { useState } from 'react';
-import './App.css';
+import './App.css'
+function Calculator() {
+  const [expression, setExpression] = useState('');
+  const [result, setResult] = useState(null);
 
-function App() {
-  const [display, setDisplay] = useState('');
-  const [error, setError] = useState('');
-  const [statusError, setStatus] = useState(false);
-
-  const addToDisplay = (value) => {
-    if(value === 'NaN'){
-      setError('NaN');
-      setStatus(true);
-    }else{
-      
-      setDisplay(display + value);
-    }
-   
+  const appendNumber = (number) => {
+    setExpression(expression + number);
   };
 
-  const addOperator = (operator) => {
-    if (isNaN(display.slice(-1))) {
-      setError('NaN');
-      setStatus(true);
-    } else if (display !== '') {
-      setDisplay(display + operator);
-    }
-  };
-
-  const calculate = () => {
-    try {
-      let result = eval(display);
-      if (result === Infinity) {
-        setError('Infinity');
-        setStatus(true);
-      } 
-      else if (isNaN(result)) {
-        setError('NaN');
-        setStatus(true);
-      } 
-      else {
-        if(result === 'NaN'){
-          setError('NaN');
-          setStatus(true);
-        }else{
-          
-        setDisplay(result.toString());
-        }
-      }
-    } catch (error) {
-      setError('Error');
-      setStatus(true);
-    }
+  const appendOperator = (operator) => {
+    if (expression === '') return;
+    setExpression(expression + operator);
   };
 
   const clearDisplay = () => {
-    setDisplay('');
-    setError('');
-    setStatus(false);
+    setExpression('');
+    setResult(null);
+  };
+
+  const calculate = () => {
+    if (expression === '') {
+      setResult('Error');
+      return;
+    }
+    try {
+      const calculatedResult = eval(expression);
+      setResult(calculatedResult === Infinity ? 'Infinity' : (isNaN(calculatedResult) ? 'NaN' : calculatedResult));
+    } catch (error) {
+      setResult('Error');
+    } finally {
+      setExpression('');
+    }
   };
 
   return (
-    <>
-      <h1 style={{ textAlign: 'center' }}>React Calculator</h1>
-      <div className="calculator">
-        <input type="text" id="display" value={display} readOnly />
-        {statusError && (
-          <div>
-            <h3 style={{ textAlign: 'center', fontFamily: 'inherit' }}>{error}</h3>
-          </div>
-        )}
-        <div className="buttons">
-          <button onClick={() => addToDisplay('7')}>7</button>
-          <button onClick={() => addToDisplay('8')}>8</button>
-          <button onClick={() => addToDisplay('9')}>9</button>
-          <button onClick={() => addOperator('+')}>+</button>
-          <button onClick={() => addToDisplay('4')}>4</button>
-          <button onClick={() => addToDisplay('5')}>5</button>
-          <button onClick={() => addToDisplay('6')}>6</button>
-          <button onClick={() => addOperator('-')}>-</button>
-          <button onClick={() => addToDisplay('1')}>1</button>
-          <button onClick={() => addToDisplay('2')}>2</button>
-          <button onClick={() => addToDisplay('3')}>3</button>
-          <button onClick={() => addOperator('*')}>*</button>
-          <button onClick={clearDisplay}>C</button>
-          <button onClick={() => addToDisplay('0')}>0</button>
-          <button onClick={calculate}>=</button>
-          <button onClick={() => addOperator('/')}>/</button>
-        </div>
+    <div className="calculator-container">
+      <input type="text" id="display" value={expression} disabled />
+      <div id="result">{result}</div>
+      <div className='buttons'>
+      <button onClick={() => appendNumber('7')}>7</button>
+      <button onClick={() => appendNumber('8')}>8</button>
+      <button onClick={() => appendNumber('9')}>9</button>
+      <button onClick={() => appendOperator('/')}>/</button>
+      <button onClick={() => appendNumber('4')}>4</button>
+      <button onClick={() => appendNumber('5')}>5</button>
+      <button onClick={() => appendNumber('6')}>6</button>
+      <button onClick={() => appendOperator('*')}>*</button>
+      <button onClick={() => appendNumber('1')}>1</button>
+      <button onClick={() => appendNumber('2')}>2</button>
+      <button onClick={() => appendNumber('3')}>3</button>
+      <button onClick={() => appendOperator('-')}>-</button>
+      <button onClick={() => appendNumber('0')}>0</button>
+      <button onClick={clearDisplay}>C</button>
+      <button onClick={() => appendOperator('+')}>+</button>
+      <button onClick={calculate}>=</button>
       </div>
-    </>
+    </div>
   );
 }
 
-export default App;
+export default Calculator;

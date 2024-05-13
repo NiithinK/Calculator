@@ -23,7 +23,7 @@ function App() {
         setError('Infinity');
         setStatus(true);
       } else if (isNaN(result)) {
-        setError('Error');
+        setError('NaN');
         setStatus(true);
       } else {
         setDisplay(result.toString());

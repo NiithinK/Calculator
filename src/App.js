@@ -11,9 +11,13 @@ function App() {
   };
 
   const addOperator = (operator) => {
-     if (display === '' || isNaN(display.slice(-1))) {
-    setDisplay('Error');
+     if (display === '') {
+    setError('Error');
     return;
+  }
+
+  if(isNaN(display.slice(-1))){
+    setError('NaN');
   }
     if (display !== '' && !isNaN(display.slice(-1))) {
       setDisplay(display + operator);
@@ -26,15 +30,18 @@ function App() {
       if (result === Infinity) {
         setError('Infinity');
         setStatus(true);
-      } else if (isNaN(result)) {
-        setError('Error');
-        setStatus(true);
-      } else {
+      
+      } 
+      // else if (isNaN(result)) {
+      //   setError('Error');
+      //   setStatus(true);
+      // } 
+      else  {
         setDisplay(result.toString());
         
       }
     } catch (error) {
-      setDisplay('Error');
+      setError('Error');
     }
   };
 

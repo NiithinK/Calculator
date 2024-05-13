@@ -3,6 +3,8 @@ import './App.css';
 
 function App() {
   const [display, setDisplay] = useState('');
+  const [error,setError] = useState('');
+  const [statusError,setStatus]=useState(false);
 
   const addToDisplay = (value) => {
     setDisplay(display + value);
@@ -18,11 +20,14 @@ function App() {
     try {
       let result = eval(display);
       if (result === Infinity) {
-        setDisplay('Infinity');
+        setError('Infinity');
+        setStatus(true);
       } else if (isNaN(result)) {
-        setDisplay('Error');
+        setError('Error');
+        setStatus(true);
       } else {
         setDisplay(result.toString());
+        
       }
     } catch (error) {
       setDisplay('Error');
@@ -39,6 +44,11 @@ function App() {
     <div className="calculator">
       
       <input type="text" id="display" value={display} readOnly />
+      {statusError && 
+      <div>
+        <h3 style={{textAlign:'center',fontFamily:'inherit'}}>{error}</h3>
+      </div>
+      } 
       <div className="buttons">
         <button onClick={() => addToDisplay('7')}>7</button>
         <button onClick={() => addToDisplay('8')}>8</button>

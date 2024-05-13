@@ -32,10 +32,10 @@ function App() {
         setStatus(true);
       
       } 
-      // else if (isNaN(result)) {
-      //   setError('Error');
-      //   setStatus(true);
-      // } 
+      else if (isNaN(result)) {
+        setError('Error');
+        setStatus(true);
+      } 
       else  {
         setDisplay(result.toString());
         

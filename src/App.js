@@ -11,6 +11,10 @@ function App() {
   };
 
   const addOperator = (operator) => {
+     if (display === '' || isNaN(display.slice(-1))) {
+    setDisplay('Error');
+    return;
+  }
     if (display !== '' && !isNaN(display.slice(-1))) {
       setDisplay(display + operator);
     }
@@ -23,7 +27,7 @@ function App() {
         setError('Infinity');
         setStatus(true);
       } else if (isNaN(result)) {
-        setError('NaN');
+        setError('Error');
         setStatus(true);
       } else {
         setDisplay(result.toString());
@@ -36,6 +40,7 @@ function App() {
 
   const clearDisplay = () => {
     setDisplay('');
+    setError('');
   };
 
   return (
